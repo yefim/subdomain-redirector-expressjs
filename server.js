@@ -19,17 +19,20 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/edit', async (req, res) => {
-  const link = await prisma.shortLink.create({
-    data: {
-      host: req.hostname,
-      redirectUrl: 'https://google.com',
-    },
-  });
-
   res.send(`you are editing ${req.hostname}`);
 });
 
 app.post('/edit', async (req, res) => {
+  if (req.body.password && req.body.password === 'TESTING') {
+    const link = await prisma.shortLink.create({
+      data: {
+        host: req.hostname,
+        redirectUrl: req.body.redirectUrl,
+      },
+    });
+  } else {
+    res.send('wrong password');
+  }
 });
 
 app.listen(process.env.PORT || 3000, () => {
