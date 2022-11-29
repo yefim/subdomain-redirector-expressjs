@@ -34,7 +34,7 @@ app.get('/edit', async (req, res) => {
 
   res.send(`<form method="post" action="" onsubmit="navigator.clipboard.writeText('https://' + window.location.host)">
       <label>Redirect URL
-        <input type="text" name="redirectUrl" value="${link.redirectUrl || ''}">
+        <input type="text" name="redirectUrl" value="${link && link.redirectUrl || ''}">
       </label>
       <label>Password
         <input type="password" name="password">
