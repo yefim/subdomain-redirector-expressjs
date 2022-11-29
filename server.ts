@@ -69,5 +69,5 @@ app.post('/edit', async (req, res) => {
 });
 
 app.listen(process.env.PORT || 3000, () => {
-  console.log('Listening...');
+  console.log(`Listening on ${process.env.PORT || 3000}...`);
 });
