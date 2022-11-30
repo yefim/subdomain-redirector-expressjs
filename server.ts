@@ -14,15 +14,35 @@ app.get('/', async (req, res) => {
   });
 
   if (link) {
-    // res.redirect(link.redirectUrl);
-    console.log(req.headers);
     // log the hit
-    // const hit = await prisma.hit.create({data: {}});
+    await prisma.hit.create({data: {
+      ipAddr: '0.0.0.0',
+      userAgent: req.headers['user-agent'] || '',
+      shortLinkId: link.id,
+    }});
 
     res.send(`redirecting to ${link.redirectUrl}`);
   } else {
     res.send(`link does not exist for ${req.hostname}`);
   }
+});
+
+app.get('/count', async (req, res) => {
+  const link = await prisma.shortLink.findUnique({
+    where: {
+      host: req.hostname,
+    },
+  });
+
+  const hits = link ? await prisma.hit.count({
+    where: {
+      shortLinkId: link.id,
+    }
+  }) : 0;
+
+  console.log(hits);
+
+  res.send('' + hits);
 });
 
 app.get('/edit', async (req, res) => {
